@@ -43,6 +43,13 @@ class ZED_GUI:
             [sg.Text("Largo", size=(60, 1), justification="left"), sg.InputText(key='-LENGTH-'),\
                 sg.Text(" [cm]", size=(60, 1), justification="left")],
 
+            [sg.Text("Cantidad total de cajas", size=(60, 1), justification="left"), sg.InputText("1", key='-NO_CAJAS-'),\
+                sg.Text(" [unidades]", size=(60, 1), justification="left")],
+            [sg.Text("Número de cajas de base", size=(60, 1), justification="left"), sg.InputText("1", key='-NO_CAJAS_BASE-'),\
+                sg.Text(" [unidades]", size=(60, 1), justification="left")],
+            [sg.Text("Número de cajas a lo alto", size=(60, 1), justification="left"), sg.InputText("1", key='-NO_CAJAS_ALTO-'),\
+                sg.Text(" [unidades]", size=(60, 1), justification="left")],
+
             [sg.Submit(button_text="Capturar", key="Capture")],
             [sg.Button("Cerrar", size=(10, 1), key="Exit")],
 

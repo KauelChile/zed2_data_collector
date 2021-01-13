@@ -25,6 +25,8 @@ def save_depth(subdir, img_depth) :
     saved = (img_depth.write(img_route) == sl.ERROR_CODE.SUCCESS)
     if saved :
         print("Imagen de profundida guardada en {}".format(img_route))
+        depth_image_ocv = img_depth.get_data()
+        cv2.imwrite(img_route.replace('.png', '_cv2.png'), depth_image_ocv)
     else :
         print("Error al guardar la imagen de profundidad")
 
@@ -103,8 +105,8 @@ def get_length():
     finally:
         return length
 
-def save_dimensions_data(subdir, height, width, length):
-    fieldnames = ['height', 'width', 'length']
+def save_dimensions_data(subdir, height, width, length, no_cajas, no_cajas_base, no_cajas_alto):
+    fieldnames = ['height', 'width', 'length', 'no_cajas', 'no_cajas_base', 'no_cajas_alto']
 
     '''height = get_height()
     width = get_width()
@@ -115,11 +117,11 @@ def save_dimensions_data(subdir, height, width, length):
         writer = csv.DictWriter(csv_file, fieldnames=fieldnames, delimiter=',', quoting=csv.QUOTE_MINIMAL)
         writer.writeheader()
 
-        writer.writerow({'height': height, 'width': width, 'length': length})
+        writer.writerow({'height': height, 'width': width, 'length': length, 'no_cajas': no_cajas, 'no_cajas_base': no_cajas_base, 'no_cajas_alto': no_cajas_alto})
 
     print('Dimensiones del objeto guardadas en {}'.format(sd_route))
 
-def capture_data(zed, height, width, length) :
+def capture_data(zed, height, width, length, no_cajas, no_cajas_base, no_cajas_alto) :
     print('\n##################################################')
     print("#Capturando data, no mover la cámara ni el objeto#")
     print('##################################################')
@@ -161,7 +163,7 @@ def capture_data(zed, height, width, length) :
     save_sensors_data(subdir, tmp_sensors)
 
     # get and save dimensions
-    save_dimensions_data(subdir, height, width, length)
+    save_dimensions_data(subdir, height, width, length, no_cajas, no_cajas_base, no_cajas_alto)
 
     # done
     print('Listo para capturar siguiente objeto')
@@ -231,6 +233,9 @@ def main() :
                 height = float(values["-HEIGHT-"])
                 width  = float(values["-WIDTH-"])
                 length = float(values["-LENGTH-"])
+                no_cajas = float(values["-NO_CAJAS-"])
+                no_cajas_base = float(values["-NO_CAJAS_BASE-"])
+                no_cajas_alto = float(values["-NO_CAJAS_ALTO-"])
 
                 sg.popup_timed('Capturando data, no mover la cámara ni el objeto', title='Capturando data', auto_close_duration=5, non_blocking=True)
 
@@ -239,6 +244,9 @@ def main() :
                 gui.window["-HEIGHT-"].update('')
                 gui.window["-WIDTH-"].update('')
                 gui.window["-LENGTH-"].update('')
+                gui.window["-NO_CAJAS-"].update('1')
+                gui.window["-NO_CAJAS_BASE-"].update('1')
+                gui.window["-NO_CAJAS_ALTO-"].update('1')
 
                 sg.popup_timed('Captura guardada correctamente. Listo para continuar', title='Captura exitosa', auto_close_duration=5)
             except:
