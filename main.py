@@ -239,7 +239,7 @@ def main() :
 
                 sg.popup_timed('Capturando data, no mover la cámara ni el objeto', title='Capturando data', auto_close_duration=5, non_blocking=True)
 
-                capture_data(zed, height, width, length)
+                capture_data(zed, height, width, length, no_cajas, no_cajas_base, no_cajas_alto)
 
                 gui.window["-HEIGHT-"].update('')
                 gui.window["-WIDTH-"].update('')
